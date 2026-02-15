@@ -1,23 +1,33 @@
-import Emittery from 'emittery'
 import { StateManager } from '@remote-mixer/controls'
 import {
   ApiOutMessage,
   DeviceConfiguration,
   DeviceConfigurationCategory,
+  RemoteMixerMode,
   RemoteMixerState,
   StateCategoryEntry,
 } from '@remote-mixer/types'
-import { useCallback, useEffect, useState } from 'react'
 import { assertNever } from '@remote-mixer/utils'
+import Emittery from 'emittery'
+import { useCallback, useEffect, useState } from 'react'
+
+import {
+  IemSendSelection,
+  getIemSendSelection,
+  setIemSendSelection,
+} from '../hooks/settings'
 
 const stateManager = new StateManager()
 let deviceConfiguration: DeviceConfiguration
 const deviceConfigurationMap = new Map<string, DeviceConfigurationCategory>()
+let remoteMixerMode: RemoteMixerMode = 'full'
+let iemSendSelection: IemSendSelection | null = getIemSendSelection()
 
 export const stateEvents = new Emittery()
 
 export const metersEvent = 'meters'
 export const syncEvent = 'sync'
+export const iemSendEvent = 'iemSend'
 
 export function getState(): RemoteMixerState {
   return stateManager.state
@@ -34,6 +44,9 @@ export function handleApiMessage(message: ApiOutMessage): void {
         message.device.categories.forEach(category =>
           deviceConfigurationMap.set(category.key, category)
         )
+      }
+      if (message.mode) {
+        remoteMixerMode = message.mode
       }
       stateEvents.emit(syncEvent)
       break
@@ -58,6 +71,10 @@ export function useDeviceConfiguration(): DeviceConfiguration {
   if (!deviceConfiguration)
     throw new Error('deviceConfiguration accessed before it was set!')
   return deviceConfiguration
+}
+
+export function useRemoteMixerMode(): RemoteMixerMode {
+  return remoteMixerMode
 }
 
 export function useDeviceCategory(key: string): DeviceConfigurationCategory {
@@ -97,4 +114,29 @@ export function useEntryState(
   }, [eventName, selector])
 
   return state
+}
+
+// IEM Send Selection hooks
+export function useIemSendSelection(): IemSendSelection | null {
+  const [send, setSend] = useState<IemSendSelection | null>(iemSendSelection)
+
+  useEffect(() => {
+    const update = () => {
+      setSend(iemSendSelection)
+    }
+
+    stateEvents.on(iemSendEvent, update)
+
+    return () => {
+      stateEvents.off(iemSendEvent, update)
+    }
+  }, [])
+
+  return send
+}
+
+export function updateIemSendSelection(send: IemSendSelection): void {
+  iemSendSelection = send
+  setIemSendSelection(send)
+  stateEvents.emit(iemSendEvent)
 }

@@ -1,7 +1,11 @@
 import { StateCategoryEntry } from '@remote-mixer/types'
 
 import { sendApiMessage } from '../api/api-wrapper'
-import { useDeviceCategory, useEntryState } from '../api/state'
+import {
+  useDeviceCategory,
+  useEntryState,
+  useRemoteMixerMode,
+} from '../api/state'
 import { useMeter } from '../hooks/meter'
 import { Button } from '../ui/buttons/button'
 import { Entry } from '../ui/containers/entry'
@@ -24,6 +28,7 @@ export function EntryControl({
 }: EntryControlProps) {
   const state = useEntryState(category, id) ?? ({} as StateCategoryEntry)
   const categoryInfo = useDeviceCategory(category)
+  const mode = useRemoteMixerMode()
 
   function change(changedProperty: string, value: any) {
     sendApiMessage({
@@ -52,12 +57,14 @@ export function EntryControl({
         color={state.color ?? undefined}
         meterRef={meterRef}
       />
-      <Icon
-        icon={iconDetails}
-        hoverable
-        padding
-        onClick={() => showEntryDialog({ category, id })}
-      />
+      {mode !== 'iem' && (
+        <Icon
+          icon={iconDetails}
+          hoverable
+          padding
+          onClick={() => showEntryDialog({ category, id })}
+        />
+      )}
     </Entry>
   )
 }

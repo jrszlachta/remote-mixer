@@ -7,6 +7,11 @@ const userConfig = {
   // httpPort: 8080,
   // logLevel: 'debug',
   // device: 'dummy'
+  
+  // Mode for the mixer interface:
+  // - 'iem': In-Ear Monitor mode - shows simplified controls for monitor mixing
+  // - 'full': Full mode (default) - shows all available controls and features
+  mode: 'iem',
 }
 
 module.exports = userConfig

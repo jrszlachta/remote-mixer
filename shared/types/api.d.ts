@@ -1,6 +1,8 @@
 import { DeviceConfiguration } from './device'
 import { RemoteMixerState } from './state'
 
+export type RemoteMixerMode = 'iem' | 'full'
+
 export interface ApiSyncDeviceMessage {
   type: 'sync-device'
 }
@@ -17,6 +19,7 @@ export interface ApiSyncMessage {
   type: 'sync'
   state: RemoteMixerState
   device?: DeviceConfiguration
+  mode: RemoteMixerMode
 }
 
 export interface ApiMetersMessage {
