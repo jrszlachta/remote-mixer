@@ -84,7 +84,8 @@ export const MainContainer = () => {
   // Show send selector dialog on first load in IEM mode
   useEffect(() => {
     if (mode === 'iem' && iemSend === null && availableSends.length > 0) {
-      showIemSendSelectorDialog(availableSends).then(selectedSend => {
+      // Make dialog non-dismissible when there's no selection (first load or expired)
+      showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {
           updateIemSendSelection(selectedSend)
         }

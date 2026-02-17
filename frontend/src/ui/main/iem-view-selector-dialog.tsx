@@ -8,7 +8,8 @@ import { baseline, textShade } from '../styles'
 
 const container = css`
   text-align: center;
-  padding: ${baseline(2)} 0;
+  padding: ${baseline(2)};
+  padding-right: ${baseline(7.5)};
   max-width: 600px;
 `
 
@@ -69,7 +70,8 @@ function IemSendSelectorContent({
 }
 
 export async function showIemSendSelectorDialog(
-  availableSends: FaderProperty[]
+  availableSends: FaderProperty[],
+  dismissible: boolean = true
 ): Promise<IemSendSelection | null> {
   return new Promise<IemSendSelection | null>(resolve => {
     let closeHandler: ((value: any) => void) | null = null
@@ -88,8 +90,8 @@ export async function showIemSendSelectorDialog(
       />,
       [],
       {
-        showCloseButton: true,
-        closeOnBackDrop: true,
+        showCloseButton: dismissible,
+        closeOnBackDrop: dismissible,
       },
       handler => {
         closeHandler = handler
