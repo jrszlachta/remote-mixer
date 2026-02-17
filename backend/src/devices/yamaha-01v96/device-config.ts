@@ -22,7 +22,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 8,
       namePrefix: 'AUX',
       additionalProperties: ['on'],
-      modes: ['full', 'iem'],
+      modes: ['full'],
     },
     {
       key: 'bus',

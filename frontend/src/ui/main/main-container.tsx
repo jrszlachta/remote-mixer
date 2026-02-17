@@ -1,8 +1,11 @@
 import { css } from '@linaria/core'
 import { DeviceConfigurationCategory, FaderProperty } from '@remote-mixer/types'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
+  getState,
+  stateEvents,
+  syncEvent,
   updateIemSendSelection,
   useDeviceConfiguration,
   useIemSendSelection,
@@ -47,6 +50,7 @@ function getAvailableSends(
 ): FaderProperty[] {
   const sends: FaderProperty[] = []
   const seenKeys = new Set<string>()
+  const state = getState()
 
   for (const category of categories) {
     if (category.faderProperties) {
@@ -60,7 +64,26 @@ function getAvailableSends(
         ) {
           if (!seenKeys.has(prop.key)) {
             seenKeys.add(prop.key)
-            sends.push(prop)
+            
+            // Extract category key and index from send key (e.g., 'aux1' -> 'aux', '1')
+            const match = prop.key.match(/^([a-z]+)(\d+)$/)
+            let displayLabel = prop.label
+            
+            if (match) {
+              const [, categoryKey, index] = match
+              const categoryState = state.categories[categoryKey]
+              if (categoryState && categoryState[index]) {
+                const entry = categoryState[index]
+                if (entry.name) {
+                  displayLabel = entry.name
+                }
+              }
+            }
+            
+            sends.push({
+              key: prop.key,
+              label: displayLabel,
+            })
           }
         }
       }
@@ -74,11 +97,21 @@ export const MainContainer = () => {
   const { categories } = useDeviceConfiguration()
   const mode = useRemoteMixerMode()
   const iemSend = useIemSendSelection()
+  const [stateVersion, setStateVersion] = useState(0)
+
+  // Subscribe to state sync events to refresh available sends
+  useEffect(() => {
+    const listener = () => setStateVersion(v => v + 1)
+    stateEvents.on(syncEvent, listener)
+    return () => {
+      stateEvents.off(syncEvent, listener)
+    }
+  }, [])
 
   // Get available sends for IEM mode
   const availableSends = useMemo(
     () => getAvailableSends(categories),
-    [categories]
+    [categories, stateVersion]
   )
 
   // Show send selector dialog on first load in IEM mode
