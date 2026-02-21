@@ -44,9 +44,11 @@ export function EntryControl({
 
   return (
     <Entry inactive={!state.on}>
-      <Button onDown={() => change('on', !state.on)} active={state.on}>
-        {state.on ? 'ON' : 'OFF'}
-      </Button>
+      {mode !== 'iem' && (
+        <Button onDown={() => change('on', !state.on)} active={state.on}>
+          {state.on ? 'ON' : 'OFF'}
+        </Button>
+      )}
       <Fader
         value={state[property] ?? 0}
         onChange={value => change(property, value)}
