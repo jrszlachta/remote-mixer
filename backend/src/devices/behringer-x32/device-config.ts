@@ -47,7 +47,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 6,
       namePrefix: 'MTX',
       additionalProperties: ['on'],
-      modes: ['full', 'iem'],
+      modes: ['full'],
     },
     {
       key: 'dca',
