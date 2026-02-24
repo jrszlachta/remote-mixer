@@ -6,7 +6,7 @@
 const userConfig = {
   // httpPort: 8080,
   // logLevel: 'debug',
-  // device: 'default',
+  // device: 'dummy',
   
   // Mode for the mixer interface:
   // - 'iem': In-Ear Monitor mode - shows simplified controls for monitor mixing

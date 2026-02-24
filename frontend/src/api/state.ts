@@ -116,7 +116,6 @@ export function useEntryState(
   return state
 }
 
-// IEM Send Selection hooks
 export function useIemSendSelection(): IemSendSelection | null {
   const [send, setSend] = useState<IemSendSelection | null>(iemSendSelection)
 

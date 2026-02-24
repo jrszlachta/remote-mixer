@@ -44,7 +44,6 @@ const content = css`
   }
 `
 
-// Helper to get available aux/mix sends from device configuration
 function getAvailableSends(
   categories: DeviceConfigurationCategory[]
 ): FaderProperty[] {
@@ -55,7 +54,6 @@ function getAvailableSends(
   for (const category of categories) {
     if (category.faderProperties) {
       for (const prop of category.faderProperties) {
-        // Only include aux/mix sends, not main faders
         if (
           prop.key !== 'value' &&
           (prop.key.startsWith('aux') ||
@@ -65,7 +63,6 @@ function getAvailableSends(
           if (!seenKeys.has(prop.key)) {
             seenKeys.add(prop.key)
             
-            // Extract category key and index from send key (e.g., 'aux1' -> 'aux', '1')
             const match = prop.key.match(/^([a-z]+)(\d+)$/)
             let displayLabel = prop.label
             
@@ -99,7 +96,6 @@ export const MainContainer = () => {
   const iemSend = useIemSendSelection()
   const [stateVersion, setStateVersion] = useState(0)
 
-  // Subscribe to state sync events to refresh available sends
   useEffect(() => {
     const listener = () => setStateVersion(v => v + 1)
     stateEvents.on(syncEvent, listener)
@@ -108,16 +104,13 @@ export const MainContainer = () => {
     }
   }, [])
 
-  // Get available sends for IEM mode
   const availableSends = useMemo(
     () => getAvailableSends(categories),
     [categories, stateVersion]
   )
 
-  // Show send selector dialog on first load in IEM mode
   useEffect(() => {
     if (mode === 'iem' && iemSend === null && availableSends.length > 0) {
-      // Make dialog non-dismissible when there's no selection (first load or expired)
       showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {
           updateIemSendSelection(selectedSend)
@@ -131,17 +124,14 @@ export const MainContainer = () => {
       category => !category.modes || category.modes.includes(mode)
     )
 
-    // In IEM mode, modify categories to only show the selected send
     if (mode === 'iem' && iemSend) {
       filtered = filtered
         .map(category => {
-          // If category has fader properties, filter them
           if (category.faderProperties && category.faderProperties.length > 0) {
             const selectedProp = category.faderProperties.find(
               prop => prop.key === iemSend
             )
 
-            // If this category has the selected send, show only that property
             if (selectedProp) {
               return {
                 ...category,
@@ -149,11 +139,9 @@ export const MainContainer = () => {
               }
             }
 
-            // If it doesn't have the selected send, hide it
             return null
           }
 
-          // Keep categories without faderProperties (like aux masters)
           return category
         })
         .filter((cat): cat is DeviceConfigurationCategory => cat !== null)

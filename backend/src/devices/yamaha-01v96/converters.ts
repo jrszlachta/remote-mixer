@@ -7,9 +7,6 @@ import { DataBytes } from './message'
  */
 const DEVICE_FADER_MAX = 1023
 
-/**
- * Frontend fader range (standardized across all devices)
- */
 const FRONTEND_FADER_MAX = 255
 
 /**
@@ -18,14 +15,12 @@ const FRONTEND_FADER_MAX = 255
  */
 export function fader2Data(value: unknown): DataBytes {
   if (typeof value !== 'number') return [0, 0, 0, 0]
-  // Scale from frontend range to device range
   const deviceValue = Math.round((value / FRONTEND_FADER_MAX) * DEVICE_FADER_MAX)
   return [0, 0, deviceValue >> 7, deviceValue & 0x7f]
 }
 
 export function data2Fader(data: DataBytes): number {
   const deviceValue = (data[2] << 7) + data[3]
-  // Scale from device range to frontend range
   return Math.round((deviceValue / DEVICE_FADER_MAX) * FRONTEND_FADER_MAX)
 }
 

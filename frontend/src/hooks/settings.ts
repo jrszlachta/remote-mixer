@@ -6,8 +6,6 @@ export function useSettings(): SettingsWithUpdate {
   return useContext(SettingsContext)
 }
 
-// IEM Send Selection
-// Stores the specific send property (e.g., 'aux1', 'mix3') the user wants to control
 export type IemSendSelection = string
 
 interface IemSendSelectionStorage {
@@ -16,7 +14,7 @@ interface IemSendSelectionStorage {
 }
 
 const iemSendStorageKey = 'remoteMixerIemSend'
-const iemSendTTL = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+const iemSendTTL = 24 * 60 * 60 * 1000
 
 export function getIemSendSelection(): IemSendSelection | null {
   try {
@@ -26,7 +24,6 @@ export function getIemSendSelection(): IemSendSelection | null {
     const selection: IemSendSelectionStorage = JSON.parse(stored)
     const now = Date.now()
 
-    // Check if selection has expired
     if (now - selection.timestamp > iemSendTTL) {
       clearIemSendSelection()
       return null

@@ -70,7 +70,6 @@ export function IemSendToggle({ availableSends }: IemSendToggleProps) {
     }
   }
 
-  // Find the label for the current send
   const currentSendLabel = currentSendKey
     ? availableSends.find(send => send.key === currentSendKey)?.label
     : null
