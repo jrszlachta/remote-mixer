@@ -27,7 +27,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'AUX' },
         ...arrayRange(1, 16, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
-      modes: ['full', 'iem'],
+      modes: ['full'],
     },
     {
       key: 'bus',
