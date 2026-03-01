@@ -28,6 +28,9 @@ export const stateEvents = new Emittery()
 export const metersEvent = 'meters'
 export const syncEvent = 'sync'
 export const iemSendEvent = 'iemSend'
+export const bypassIemModeEvent = 'bypassIemMode'
+
+let bypassIemMode = false
 
 export function getState(): RemoteMixerState {
   return stateManager.state
@@ -138,4 +141,27 @@ export function updateIemSendSelection(send: IemSendSelection): void {
   iemSendSelection = send
   setIemSendSelection(send)
   stateEvents.emit(iemSendEvent)
+}
+
+export function useBypassIemMode(): boolean {
+  const [bypass, setBypass] = useState(bypassIemMode)
+
+  useEffect(() => {
+    const update = () => {
+      setBypass(bypassIemMode)
+    }
+
+    stateEvents.on(bypassIemModeEvent, update)
+
+    return () => {
+      stateEvents.off(bypassIemModeEvent, update)
+    }
+  }, [])
+
+  return bypass
+}
+
+export function toggleBypassIemMode(): void {
+  bypassIemMode = !bypassIemMode
+  stateEvents.emit(bypassIemModeEvent)
 }

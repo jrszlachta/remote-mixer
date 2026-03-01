@@ -17,6 +17,7 @@ import {
   mdiPlusCircle,
   mdiPower,
   mdiSync,
+  mdiTune,
 } from '@mdi/js'
 
 export const iconLoading = mdiLoading
@@ -37,3 +38,4 @@ export const iconColor = mdiPalette
 export const iconAccount = mdiAccount
 
 export const iconLight = mdiLightbulbOnOutline
+export const iconTune = mdiTune

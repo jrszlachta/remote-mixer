@@ -7,6 +7,7 @@ import {
   stateEvents,
   syncEvent,
   updateIemSendSelection,
+  useBypassIemMode,
   useDeviceConfiguration,
   useIemSendSelection,
   useRemoteMixerMode,
@@ -93,6 +94,8 @@ function getAvailableSends(
 export const MainContainer = () => {
   const { categories } = useDeviceConfiguration()
   const mode = useRemoteMixerMode()
+  const bypassIemMode = useBypassIemMode()
+  const effectiveMode = bypassIemMode ? 'full' : mode
   const iemSend = useIemSendSelection()
   const [stateVersion, setStateVersion] = useState(0)
 
@@ -110,21 +113,21 @@ export const MainContainer = () => {
   )
 
   useEffect(() => {
-    if (mode === 'iem' && iemSend === null && availableSends.length > 0) {
+    if (effectiveMode === 'iem' && iemSend === null && availableSends.length > 0) {
       showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {
           updateIemSendSelection(selectedSend)
         }
       })
     }
-  }, [mode, iemSend, availableSends])
+  }, [effectiveMode, iemSend, availableSends])
 
   const visibleCategories = useMemo(() => {
     let filtered = categories.filter(
-      category => !category.modes || category.modes.includes(mode)
+      category => !category.modes || category.modes.includes(effectiveMode)
     )
 
-    if (mode === 'iem' && iemSend) {
+    if (effectiveMode === 'iem' && iemSend) {
       filtered = filtered
         .map(category => {
           if (category.faderProperties && category.faderProperties.length > 0) {
@@ -148,7 +151,7 @@ export const MainContainer = () => {
     }
 
     return filtered
-  }, [categories, mode, iemSend])
+  }, [categories, effectiveMode, iemSend])
 
   return (
     <div className={mainContainer}>
@@ -162,7 +165,7 @@ export const MainContainer = () => {
         />
       </div>
       <CornerOverlay />
-      {mode === 'iem' && availableSends.length > 0 && (
+      {effectiveMode === 'iem' && availableSends.length > 0 && (
         <IemSendToggle availableSends={availableSends} />
       )}
     </div>

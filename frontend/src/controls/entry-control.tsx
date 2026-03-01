@@ -2,6 +2,7 @@ import { StateCategoryEntry } from '@remote-mixer/types'
 
 import { sendApiMessage } from '../api/api-wrapper'
 import {
+  useBypassIemMode,
   useDeviceCategory,
   useEntryState,
   useRemoteMixerMode,
@@ -29,6 +30,8 @@ export function EntryControl({
   const state = useEntryState(category, id) ?? ({} as StateCategoryEntry)
   const categoryInfo = useDeviceCategory(category)
   const mode = useRemoteMixerMode()
+  const bypassIemMode = useBypassIemMode()
+  const effectiveMode = bypassIemMode ? 'full' : mode
 
   function change(changedProperty: string, value: any) {
     sendApiMessage({
@@ -44,7 +47,7 @@ export function EntryControl({
 
   return (
     <Entry inactive={!state.on}>
-      {mode !== 'iem' && (
+      {effectiveMode !== 'iem' && (
         <Button onDown={() => change('on', !state.on)} active={state.on}>
           {state.on ? 'ON' : 'OFF'}
         </Button>
@@ -59,7 +62,7 @@ export function EntryControl({
         color={state.color ?? undefined}
         meterRef={meterRef}
       />
-      {mode !== 'iem' && (
+      {effectiveMode !== 'iem' && (
         <Icon
           icon={iconDetails}
           hoverable
