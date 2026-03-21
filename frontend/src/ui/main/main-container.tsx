@@ -19,6 +19,7 @@ import { baseline, iconShade } from '../styles'
 import { CornerOverlay } from './corner-overlay'
 import { showIemSendSelectorDialog } from './iem-view-selector-dialog'
 import { IemSendToggle } from './iem-view-toggle'
+import { hasActiveOverlays } from '../overlays/overlay'
 
 const mainContainer = css`
   display: flex;
@@ -109,10 +110,13 @@ export const MainContainer = () => {
 
   const availableSends = useMemo(
     () => getAvailableSends(categories),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [categories, stateVersion]
   )
 
   useEffect(() => {
+    if (hasActiveOverlays()) return;
+    
     if (effectiveMode === 'iem' && iemSend === null && availableSends.length > 0) {
       showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {

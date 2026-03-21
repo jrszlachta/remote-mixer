@@ -30,7 +30,10 @@ export const syncEvent = 'sync'
 export const iemSendEvent = 'iemSend'
 export const bypassIemModeEvent = 'bypassIemMode'
 
-let bypassIemMode = false
+let bypassIemMode =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1' ||
+  new URLSearchParams(window.location.search).get('bypassIemMode') === 'true'
 
 export function getState(): RemoteMixerState {
   return stateManager.state

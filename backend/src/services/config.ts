@@ -1,10 +1,9 @@
 import { join } from 'path'
 
+import { RemoteMixerMode } from '@remote-mixer/types'
 import { LogLevel } from '@remote-mixer/utils'
 
 import { isDevelopment } from './env'
-
-export type RemoteMixerMode = 'iem' | 'full'
 
 export interface RemoteMixerConfiguration {
   /** HTTP port the server is opened on. Defaults to 8000 */

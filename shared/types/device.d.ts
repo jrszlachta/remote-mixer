@@ -1,4 +1,4 @@
-import { ApiChangeMessage, ApiMetersMessage } from './api'
+import { ApiChangeMessage, ApiMetersMessage, RemoteMixerMode } from './api'
 
 export type DeviceChangeMessage = ApiChangeMessage
 export type DeviceMetersMessage = ApiMetersMessage
@@ -25,7 +25,7 @@ export interface DeviceConfigurationCategory {
    * - 'iem': Only show in In-Ear Monitor mode
    * - 'full': Only show in Full mode
    */
-  modes?: ('iem' | 'full')[]
+  modes?: RemoteMixerMode[]
 }
 
 export interface DeviceConfiguration {

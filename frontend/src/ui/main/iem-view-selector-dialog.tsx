@@ -3,7 +3,7 @@ import { FaderProperty } from '@remote-mixer/types'
 
 import { IemSendSelection } from '../../hooks/settings'
 import { Button } from '../buttons/button'
-import { showDialog } from '../overlays/dialog'
+import { showDialogWithReturnValue } from '../overlays/dialog'
 import { baseline, textShade } from '../styles'
 
 const container = css`
@@ -73,33 +73,21 @@ export async function showIemSendSelectorDialog(
   availableSends: FaderProperty[],
   dismissible: boolean = true
 ): Promise<IemSendSelection | null> {
-  return new Promise<IemSendSelection | null>(resolve => {
-    let closeHandler: ((value: any) => void) | null = null
-
-    const handleSelect = (send: IemSendSelection) => {
-      resolve(send)
-      if (closeHandler) {
-        closeHandler(true)
-      }
-    }
-
-    showDialog(
+  const result = await showDialogWithReturnValue<IemSendSelection>(
+    (onChange, close) => (
       <IemSendSelectorContent
         availableSends={availableSends}
-        onSelect={handleSelect}
-      />,
-      [],
-      {
-        showCloseButton: dismissible,
-        closeOnBackDrop: dismissible,
-      },
-      handler => {
-        closeHandler = handler
-      }
-    ).then(result => {
-      if (!result) {
-        resolve(null)
-      }
-    })
-  })
+        onSelect={send => {
+          onChange(send)
+          close(true)
+        }}
+      />
+    ),
+    [],
+    {
+      showCloseButton: dismissible,
+      closeOnBackDrop: dismissible,
+    }
+  )
+  return result ?? null
 }
