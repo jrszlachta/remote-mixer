@@ -2,10 +2,9 @@ import { StateCategoryEntry } from '@remote-mixer/types'
 
 import { sendApiMessage } from '../api/api-wrapper'
 import {
-  useBypassIemMode,
   useDeviceCategory,
   useEntryState,
-  useRemoteMixerMode,
+  useEffectiveRemoteMixerMode,
 } from '../api/state'
 import { useMeter } from '../hooks/meter'
 import { Button } from '../ui/buttons/button'
@@ -29,9 +28,7 @@ export function EntryControl({
 }: EntryControlProps) {
   const state = useEntryState(category, id) ?? ({} as StateCategoryEntry)
   const categoryInfo = useDeviceCategory(category)
-  const mode = useRemoteMixerMode()
-  const bypassIemMode = useBypassIemMode()
-  const effectiveMode = bypassIemMode ? 'full' : mode
+  const effectiveMode = useEffectiveRemoteMixerMode()
 
   function change(changedProperty: string, value: any) {
     sendApiMessage({

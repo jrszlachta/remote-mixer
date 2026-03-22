@@ -164,6 +164,12 @@ export function useBypassIemMode(): boolean {
   return bypass
 }
 
+export function useEffectiveRemoteMixerMode(): RemoteMixerMode {
+  const mode = useRemoteMixerMode()
+  const bypassIemMode = useBypassIemMode()
+  return bypassIemMode ? 'full' : mode
+}
+
 export function toggleBypassIemMode(): void {
   bypassIemMode = !bypassIemMode
   stateEvents.emit(bypassIemModeEvent)

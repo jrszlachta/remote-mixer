@@ -7,10 +7,9 @@ import {
   stateEvents,
   syncEvent,
   updateIemSendSelection,
-  useBypassIemMode,
   useDeviceConfiguration,
   useIemSendSelection,
-  useRemoteMixerMode,
+  useEffectiveRemoteMixerMode,
 } from '../../api/state'
 import { CategoryControl } from '../../controls/category-control'
 import { Tabs } from '../containers/tabs'
@@ -94,9 +93,7 @@ function getAvailableSends(
 
 export const MainContainer = () => {
   const { categories } = useDeviceConfiguration()
-  const mode = useRemoteMixerMode()
-  const bypassIemMode = useBypassIemMode()
-  const effectiveMode = bypassIemMode ? 'full' : mode
+  const effectiveMode = useEffectiveRemoteMixerMode()
   const iemSend = useIemSendSelection()
   const [stateVersion, setStateVersion] = useState(0)
 
@@ -116,7 +113,7 @@ export const MainContainer = () => {
 
   useEffect(() => {
     if (hasActiveOverlays()) return;
-    
+
     if (effectiveMode === 'iem' && iemSend === null && availableSends.length > 0) {
       showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {
