@@ -24,7 +24,7 @@ export interface SettingsWithUpdate extends Settings {
 const localStorageKey = 'remoteMixerSettings'
 
 const defaultSettings: Settings = {
-  lightMode: true,
+  lightMode: false,
 }
 
 const initialSettings = localStorage[localStorageKey]

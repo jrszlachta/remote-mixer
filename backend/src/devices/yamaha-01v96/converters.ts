@@ -1,17 +1,29 @@
 import { DataBytes } from './message'
 
 /**
- * 10bit fader values are transmitted in 4 bytes
+ * Device fader range configuration
+ * - Use 1023 for 10-bit models
+ * - Use 255 for 8-bit models
+ */
+const DEVICE_FADER_MAX = 1023
+
+const FRONTEND_FADER_MAX = 255
+
+/**
+ * Fader values are transmitted in 4 bytes
  * 00000000 00000000 00000nnn 0nnnnnnn
  */
 export function fader2Data(value: unknown): DataBytes {
   if (typeof value !== 'number') return [0, 0, 0, 0]
-  return [0, 0, value >> 7, value & 0x7f]
+  const deviceValue = Math.round((value / FRONTEND_FADER_MAX) * DEVICE_FADER_MAX)
+  return [0, 0, deviceValue >> 7, deviceValue & 0x7f]
 }
 
 export function data2Fader(data: DataBytes): number {
-  return (data[2] << 7) + data[3]
+  const deviceValue = (data[2] << 7) + data[3]
+  return Math.round((deviceValue / DEVICE_FADER_MAX) * FRONTEND_FADER_MAX)
 }
+
 
 /**
  * channel on values: last byte 1/0
