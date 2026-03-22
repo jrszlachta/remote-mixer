@@ -63,10 +63,10 @@ function getAvailableSends(
         ) {
           if (!seenKeys.has(prop.key)) {
             seenKeys.add(prop.key)
-            
+
             const match = prop.key.match(/^([a-z]+)(\d+)$/)
             let displayLabel = prop.label
-            
+
             if (match) {
               const [, categoryKey, index] = match
               const categoryState = state.categories[categoryKey]
@@ -77,7 +77,7 @@ function getAvailableSends(
                 }
               }
             }
-            
+
             sends.push({
               key: prop.key,
               label: displayLabel,
@@ -112,9 +112,13 @@ export const MainContainer = () => {
   )
 
   useEffect(() => {
-    if (hasActiveOverlays()) return;
+    if (hasActiveOverlays()) return
 
-    if (effectiveMode === 'iem' && iemSend === null && availableSends.length > 0) {
+    if (
+      effectiveMode === 'iem' &&
+      iemSend === null &&
+      availableSends.length > 0
+    ) {
       showIemSendSelectorDialog(availableSends, false).then(selectedSend => {
         if (selectedSend !== null) {
           updateIemSendSelection(selectedSend)

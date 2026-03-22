@@ -25,15 +25,15 @@ const toggleContainer = css`
   padding: ${baseline(2)};
   border: none;
   background: transparent;
-  
+
   &:hover .send-label {
     color: ${iconShade(0)};
   }
-  
+
   &:hover .icon-account path {
     fill: ${iconShade(0)};
   }
-  
+
   &:active {
     opacity: 0.7;
   }
@@ -41,7 +41,7 @@ const toggleContainer = css`
 
 const iconWrapper = css`
   fill: ${iconShade(1)};
-  
+
   path {
     transition: fill 0.15s ease;
   }
@@ -61,7 +61,7 @@ export interface IemSendToggleProps {
 
 export function IemSendToggle({ availableSends }: IemSendToggleProps) {
   const currentSendKey = useIemSendSelection()
-  
+
   const handleSendToggle = async () => {
     if (hasActiveOverlays()) return
     const selectedSend = await showIemSendSelectorDialog(availableSends)
@@ -78,9 +78,7 @@ export function IemSendToggle({ availableSends }: IemSendToggleProps) {
     <div className={topRightOverlay}>
       <button className={toggleContainer} onClick={handleSendToggle}>
         {currentSendLabel && (
-          <span className={`${sendLabel} send-label`}>
-            {currentSendLabel}
-          </span>
+          <span className={`${sendLabel} send-label`}>{currentSendLabel}</span>
         )}
         <Icon
           className={`${iconWrapper} icon-account`}

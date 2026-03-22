@@ -1,7 +1,11 @@
 import { css } from '@linaria/core'
 
 import { sendApiMessage } from '../../api/api-wrapper'
-import { toggleBypassIemMode, useBypassIemMode, useRemoteMixerMode } from '../../api/state'
+import {
+  toggleBypassIemMode,
+  useBypassIemMode,
+  useRemoteMixerMode,
+} from '../../api/state'
 import { useSettings } from '../../hooks/settings'
 import { iconFullscreen, iconLight, iconSync, iconTune } from '../icons'
 import { Icon } from '../icons/icon'
@@ -58,7 +62,13 @@ export function CornerOverlay() {
           onClick={toggleFullScreen}
         />
         {isLocalhost && serverMode === 'iem' && (
-          <div title={bypassIemMode ? 'IEM mode bypassed – click to restore' : 'Bypass IEM mode (show full options)'}>
+          <div
+            title={
+              bypassIemMode
+                ? 'IEM mode bypassed – click to restore'
+                : 'Bypass IEM mode (show full options)'
+            }
+          >
             <Icon
               className={cornerIcon}
               icon={iconTune}
