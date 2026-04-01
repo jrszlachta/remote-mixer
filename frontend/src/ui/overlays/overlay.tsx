@@ -17,6 +17,10 @@ export function removeOverlay(component: ComponentType<OverlayProps>) {
   overlaysChanged?.()
 }
 
+export function hasActiveOverlays(): boolean {
+  return currentOverlays.length > 0
+}
+
 function subscribe(callback: () => void) {
   overlaysChanged = callback
   return () => (overlaysChanged = null)

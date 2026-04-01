@@ -7,6 +7,7 @@ import {
   useDeviceCategory,
   useDeviceConfiguration,
   useEntryState,
+  useEffectiveRemoteMixerMode,
 } from '../../api/state'
 import { sendApiMessage } from '../../api/api-wrapper'
 import { Button } from '../../ui/buttons/button'
@@ -35,6 +36,7 @@ export function EntryDialog({ category, id }: EntryDialogProps) {
   const configuration = useDeviceConfiguration()
   const categoryInfo = useDeviceCategory(category)
   const state = useEntryState(category, id) ?? ({} as StateCategoryEntry)
+  const effectiveMode = useEffectiveRemoteMixerMode()
 
   function change(changedProperty: string, value: any) {
     sendApiMessage({
@@ -74,10 +76,14 @@ export function EntryDialog({ category, id }: EntryDialogProps) {
             />
           </>
         )}
-        &nbsp;
-        <Button onDown={() => change('on', !state.on)} active={state.on}>
-          {state.on ? 'ON' : 'OFF'}
-        </Button>
+        {effectiveMode !== 'iem' && (
+          <>
+            &nbsp;
+            <Button onDown={() => change('on', !state.on)} active={state.on}>
+              {state.on ? 'ON' : 'OFF'}
+            </Button>
+          </>
+        )}
       </h2>
       <Tabs
         tabs={[

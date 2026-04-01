@@ -1,7 +1,11 @@
 import { StateCategoryEntry } from '@remote-mixer/types'
 
 import { sendApiMessage } from '../api/api-wrapper'
-import { useDeviceCategory, useEntryState } from '../api/state'
+import {
+  useDeviceCategory,
+  useEntryState,
+  useEffectiveRemoteMixerMode,
+} from '../api/state'
 import { useMeter } from '../hooks/meter'
 import { Button } from '../ui/buttons/button'
 import { Entry } from '../ui/containers/entry'
@@ -24,6 +28,7 @@ export function EntryControl({
 }: EntryControlProps) {
   const state = useEntryState(category, id) ?? ({} as StateCategoryEntry)
   const categoryInfo = useDeviceCategory(category)
+  const effectiveMode = useEffectiveRemoteMixerMode()
 
   function change(changedProperty: string, value: any) {
     sendApiMessage({
@@ -39,9 +44,11 @@ export function EntryControl({
 
   return (
     <Entry inactive={!state.on}>
-      <Button onDown={() => change('on', !state.on)} active={state.on}>
-        {state.on ? 'ON' : 'OFF'}
-      </Button>
+      {effectiveMode !== 'iem' && (
+        <Button onDown={() => change('on', !state.on)} active={state.on}>
+          {state.on ? 'ON' : 'OFF'}
+        </Button>
+      )}
       <Fader
         value={state[property] ?? 0}
         onChange={value => change(property, value)}
@@ -52,12 +59,14 @@ export function EntryControl({
         color={state.color ?? undefined}
         meterRef={meterRef}
       />
-      <Icon
-        icon={iconDetails}
-        hoverable
-        padding
-        onClick={() => showEntryDialog({ category, id })}
-      />
+      {effectiveMode !== 'iem' && (
+        <Icon
+          icon={iconDetails}
+          hoverable
+          padding
+          onClick={() => showEntryDialog({ category, id })}
+        />
+      )}
     </Entry>
   )
 }

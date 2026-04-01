@@ -14,6 +14,7 @@ export const deviceConfig: DeviceConfiguration = {
         ...arrayRange(1, 8, it => ({ key: 'aux' + it, label: 'AUX' + it })),
       ],
       additionalProperties: ['on'],
+      modes: ['full', 'iem'],
     },
     {
       key: 'aux',
@@ -21,6 +22,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 8,
       namePrefix: 'AUX',
       additionalProperties: ['on'],
+      modes: ['full'],
     },
     {
       key: 'bus',
@@ -28,6 +30,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 8,
       namePrefix: 'BUS',
       additionalProperties: ['on'],
+      modes: ['full'],
     },
     {
       key: 'sum',
@@ -35,6 +38,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 1,
       namePrefix: 'SUM',
       additionalProperties: ['on'],
+      modes: ['full'],
     },
   ],
 }

@@ -1,21 +1,23 @@
 // eslint-disable-next-line no-restricted-imports
 import {
-  mdiClose,
-  mdiLightbulbOnOutline,
-  mdiCheck,
-  mdiPower,
-  mdiChevronLeft,
-  mdiDelete,
-  mdiPlusCircle,
-  mdiArrowUp,
+  mdiAccount,
   mdiArrowDown,
+  mdiArrowUp,
+  mdiCheck,
   mdiChevronDown,
+  mdiChevronLeft,
   mdiChevronUp,
-  mdiGauge,
-  mdiLoading,
-  mdiSync,
-  mdiPalette,
+  mdiClose,
+  mdiDelete,
   mdiFullscreen,
+  mdiGauge,
+  mdiLightbulbOnOutline,
+  mdiLoading,
+  mdiPalette,
+  mdiPlusCircle,
+  mdiPower,
+  mdiSync,
+  mdiTune,
 } from '@mdi/js'
 
 export const iconLoading = mdiLoading
@@ -33,5 +35,7 @@ export const iconFullscreen = mdiFullscreen
 export const iconDetails = mdiGauge
 export const iconSync = mdiSync
 export const iconColor = mdiPalette
+export const iconAccount = mdiAccount
 
 export const iconLight = mdiLightbulbOnOutline
+export const iconTune = mdiTune

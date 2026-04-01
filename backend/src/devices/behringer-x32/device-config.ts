@@ -14,6 +14,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'CH' },
         ...arrayRange(1, 16, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
+      modes: ['full', 'iem'],
     },
     {
       key: 'auxin',
@@ -26,6 +27,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'AUX' },
         ...arrayRange(1, 16, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
+      modes: ['full'],
     },
     {
       key: 'bus',
@@ -37,6 +39,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'BUS' },
         ...arrayRange(1, 6, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
+      modes: ['full'],
     },
     {
       key: 'mtx',
@@ -44,6 +47,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 6,
       namePrefix: 'MTX',
       additionalProperties: ['on'],
+      modes: ['full'],
     },
     {
       key: 'dca',
@@ -51,6 +55,7 @@ export const deviceConfig: DeviceConfiguration = {
       count: 8,
       namePrefix: 'DCA',
       additionalProperties: ['on'],
+      modes: ['full'],
     },
     {
       key: 'st',
@@ -62,6 +67,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'ST' },
         ...arrayRange(1, 6, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
+      modes: ['full'],
     },
     {
       key: 'm',
@@ -73,6 +79,7 @@ export const deviceConfig: DeviceConfiguration = {
         { key: 'value', label: 'M' },
         ...arrayRange(1, 6, it => ({ key: 'mix' + it, label: 'MIX' + it })),
       ],
+      modes: ['full'],
     },
   ],
   colors: [

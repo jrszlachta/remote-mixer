@@ -1,5 +1,6 @@
 import { join } from 'path'
 
+import { RemoteMixerMode } from '@remote-mixer/types'
 import { LogLevel } from '@remote-mixer/utils'
 
 import { isDevelopment } from './env'
@@ -16,6 +17,14 @@ export interface RemoteMixerConfiguration {
    * Refer to the README of the device controller for configuration options
    */
   device: string | { type: string; options: any }
+
+  /**
+   * Mode for the mixer interface.
+   * - 'iem': In-Ear Monitor mode - shows simplified controls for monitor mixing
+   * - 'full': Full mode - shows all available controls and features
+   * Defaults to 'full'
+   */
+  mode: RemoteMixerMode
 }
 
 export const configDirectoryPath = join(__dirname, '../../../config')
@@ -40,3 +49,4 @@ export const logLevel = c(
   isDevelopment ? LogLevel.Debug : LogLevel.Info
 ) as LogLevel
 export const device = c('device', 'dummy')
+export const mode = c('mode', 'full')
